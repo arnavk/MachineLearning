@@ -20,6 +20,7 @@ for index = 1:numberOfFolders
         fullPath = strcat(input_dir,file);
         disp(fullPath);
         img = imread(fullPath);
+        img = histeq(img);
         img = im2double(img);
         %imshow(img);
         images(:, imageIndex) = reshape(img(:),[],1);
@@ -86,6 +87,7 @@ L = 20;
     
     ProjectedImages = zeros(L,numImages); 
     ProjectedTestImageOriginal = imread('/atandtcambridge/s20/10.pgm');
+    ProjectedTestImageOriginal = histeq(ProjectedTestImageOriginal);
     ProjectedTestImageOriginal = im2double(ProjectedTestImageOriginal);
     ProjectedTestImageOriginal = reshape(ProjectedTestImageOriginal(:),[],1);
     ProjectedTestImage = W'*(ProjectedTestImageOriginal-mean_face);
