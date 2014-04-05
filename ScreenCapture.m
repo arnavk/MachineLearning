@@ -17,6 +17,7 @@ imageArray = zeroes(10000,row);
 hold on
 for i = 1:size(boundingBox,1)
     rectangle('Position', boundingBox(i,:),'LineWidth',5,'LineStyle','-','EdgeColor','r');
+    inputImage = rgb2gray(inputImage);
     imageArray(i,:) = reshape(imresize(imcrop(inputImage, boundingBox(i,:)), [100 100]),[],1);
 end
 title('Face Detection');

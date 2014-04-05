@@ -85,10 +85,34 @@ function takePictureButton_Callback(hObject, eventdata, handles)
 % hObject    handle to takePictureButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-
+%if(webcamUpsideDown == 1)
+    global vid;
+    inputImage = im2double(imrotate(rgb2gray(getsnapshot(vid)), 180));
+%else
+%    inputImage = im2double(getsnapshot(vid));
+%end
+    stop(vid);
+    faceDetect = vision.CascadeObjectDetector;
+    boundingBox = step(faceDetect, inputImage);
+    [row, column] = size(boundingBox);
+    imageArray = zeros(10000,row);
+    hold on
+    for i = 1:size(boundingBox,1)
+        rectangle('Position', boundingBox(i,:),'LineWidth',5,'LineStyle','-','EdgeColor','r');
+        imageBeforeReshape = imresize(imcrop(inputImage, boundingBox(i,:)), [100 100]);
+        imwrite(imageBeforeReshape, strcat('test.jpg'));
+        imageArray(:,i) = reshape(imageBeforeReshape,[],1);
+    end
+    title('Face Detection');
+    hold off;
 % --- Executes on button press in openCameraButton.
 function openCameraButton_Callback(hObject, eventdata, handles)
 % hObject    handle to openCameraButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+    info = imaqhwinfo('winvideo', 1);
+    global vid;
+    vid = videoinput('winvideo', 1, info.DefaultFormat);
+    preview(vid);
+    start(vid);
+    set(vid, 'ReturnedColorSpace', 'rgb');
