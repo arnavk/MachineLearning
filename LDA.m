@@ -13,7 +13,7 @@ numImages = tillWhichImage*numberOfFolders;
 num_images = numImages;
 
 for index = 1:numberOfFolders
-    input_dir = strcat('/atandtcambridge/s',num2str(index),'/');
+    input_dir = strcat('atandtcambridge/s',num2str(index),'/');
     disp(input_dir);
     for n = 1:tillWhichImage
         file = strcat(num2str(n),'.pgm');
@@ -86,7 +86,7 @@ L = 20;
     end 
     
     ProjectedImages = zeros(L,numImages); 
-    ProjectedTestImageOriginal = imread('/atandtcambridge/s20/10.pgm');
+    ProjectedTestImageOriginal = imread('atandtcambridge/s20/10.pgm');
     ProjectedTestImageOriginal = histeq(ProjectedTestImageOriginal);
     ProjectedTestImageOriginal = im2double(ProjectedTestImageOriginal);
     ProjectedTestImageOriginal = reshape(ProjectedTestImageOriginal(:),[],1);
