@@ -22,7 +22,7 @@ function varargout = UI(varargin)
 
 % Edit the above text to modify the response to help UI
 
-% Last Modified by GUIDE v2.5 05-Apr-2014 19:20:19
+% Last Modified by GUIDE v2.5 06-Apr-2014 22:04:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -87,7 +87,8 @@ function takePictureButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 %if(webcamUpsideDown == 1)
     global vid;
-    inputImage = im2double(imrotate(rgb2gray(getsnapshot(vid)), 180));
+    imageSnapshot = getsnapshot(vid);
+    inputImage = im2double(imrotate(rgb2gray(imageSnapshot), 0));
 %else
 %    inputImage = im2double(getsnapshot(vid));
 %end
@@ -97,14 +98,16 @@ function takePictureButton_Callback(hObject, eventdata, handles)
     [row, column] = size(boundingBox);
     imageArray = zeros(10000,row);
     hold on
-    for i = 1:size(boundingBox,1)
-        rectangle('Position', boundingBox(i,:),'LineWidth',5,'LineStyle','-','EdgeColor','r');
-        imageBeforeReshape = imresize(imcrop(inputImage, boundingBox(i,:)), [100 100]);
-        imwrite(imageBeforeReshape, strcat('test.jpg'));
-        imageArray(:,i) = reshape(imageBeforeReshape,[],1);
-    end
     title('Face Detection');
     hold off;
+    for i = 1:size(boundingBox,1)
+        rectangle('Position', boundingBox(i,:),'LineWidth',5,'LineStyle','-','EdgeColor','r');
+        imageBeforeReshape = histeq(imresize(imcrop(inputImage, boundingBox(i,:)), [100 100]));
+        figure(); imshow(imageBeforeReshape, []);
+        imwrite(imageBeforeReshape, strcat('test',num2str(i),'.jpg'));
+        imageArray(:,i) = reshape(imageBeforeReshape,[],1);
+    end
+    imageReturn = webcamProcessing(imageSnapshot, imageArray);
 % --- Executes on button press in openCameraButton.
 function openCameraButton_Callback(hObject, eventdata, handles)
 % hObject    handle to openCameraButton (see GCBO)

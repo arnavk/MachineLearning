@@ -20,7 +20,7 @@ for i = 0:(numberOfFolders - 1)
         fullPath = strcat(input_dir,file);
         disp(fullPath);
         img = imread(fullPath);
-        img = histeq(img);
+        %img = histeq(img);
         img = im2double(img);
         %imshow(img);
         images(:, imageIndex) = reshape(img(:),[],1);
@@ -47,8 +47,8 @@ evectors = evectors(:, 1:num_eigenfaces);
 features = evectors' * shifted_images;
 
 %get input image and convert to type double
-input_image = imread('/atandtcambridge/s2/10.pgm');
-input_image = histeq(input_image);
+input_image = imread('/atandtcambridge/s10/10.pgm');
+%input_image = histeq(input_image);
 input_image = im2double(input_image);
 
 % calculate the similarity of the input to each training image
